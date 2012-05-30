@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+PHPVM_PATH=$HOME/.phpvm
+mkdir -p $PHPVM_PATH
+mkdir -p $PHPVM_PATH/scripts
+
+# copy phpvm script dir to correct directory
+cp ./phpvm $PHPVM_PATH/scripts

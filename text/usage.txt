@@ -1,0 +1,12 @@
+
+phpvm - A php version management system
+
+-- Commands
+
+  phpvm reload
+
+    Reloads the script's environment
+
+  phpvm install {version_number}
+
+    Installs a php version

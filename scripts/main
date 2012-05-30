@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+function usage() {
+  cat $phpvm_path/text/usage.txt
+  echo ''
+}
+
+function install_php() {
+  echo "$1"
+}
+
+function reload_env() {
+  echo "reloading $phpvm_path/phpvm"
+  . $phpvm_path/scripts/phpvm
+}
+
+# main
+function phpvm() {
+  # TODO remove reload every time
+  reload_env
+
+  case "$1" in
+    install)
+      install_php "$@"
+      ;;
+    reload)
+      reload_env
+      ;;
+    *)
+      usage
+      ;;
+  esac
+}
