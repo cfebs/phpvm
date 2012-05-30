@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+__phpvm_use_php() {
+  phpvm_bin_path="$phpvm_path/phps/php-$1/bin"
+
+  if [ -d "$phpvm_bin_path" ]
+  then
+    PATH="$PATH:${phpvm_bin_path}"
+    export PATH
+  else
+    echo "Version is not installed"
+  fi
+}

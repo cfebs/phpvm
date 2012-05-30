@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -o errexit
 
-echo "$@"
 . $phpvm_path/scripts/util
+
 
 # TODO remove reload every time
 reload_env
@@ -19,4 +19,5 @@ case "$1" in
     usage
     ;;
 esac
+
 

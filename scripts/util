@@ -61,3 +61,42 @@ function reload_env() {
   echo "reloading $phpvm_path/phpvm"
   . $phpvm_path/scripts/phpvm
 }
+
+
+# TODO figure out path management
+
+#_remove_phpvm_from_path()
+#{
+#  PATH="$(printf "%b" "$PATH" \
+#          | awk -v RS=: -v ORS=: "/${phpvm_path//\//\/}/ {next} {print}")"
+#  PATH="${PATH/%:/}" # Strip trailing : if it exists
+#
+#  export PATH
+#
+#  builtin hash -r
+#}
+
+available_versions()
+{
+  echo "Available versions"
+  echo ""
+  ls "$install_dir" | grep "php-.*"
+  echo ""
+}
+
+#if printf "%b" "${PATH//:/ }" | GREP_OPTIONS="" \grep -vF "${rvm_bin_path}" >/dev/null 2>&1
+#  then
+#    case "${rvm_ruby_string:-"system"}" in
+#      system)
+#        PATH="$PATH:${rvm_bin_path}"
+#        ;;
+#      *)
+#        PATH="${rvm_bin_path}:$PATH"
+#        ;;
+#    esac
+#
+#    builtin hash -r
+#  fi
+#
+#  return 0
+#

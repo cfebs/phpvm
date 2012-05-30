@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# TODO organize better
+
 export phpvm_path
 
 if [[ -z "${phpvm_path:-}" ]]
@@ -7,7 +9,27 @@ then
   phpvm_path="$HOME/.phpvm"
 fi
 
+. "$phpvm_path/scripts/use_php"
+
+function reload_env() {
+  echo "reloading $phpvm_path/phpvm"
+  . $phpvm_path/scripts/phpvm
+}
+
 function phpvm() {
   chmod +x $phpvm_path/scripts/main
-  $phpvm_path/scripts/main "$@"
+  reload_env
+
+  case "$1" in
+    reload)
+      reload_env
+    ;;
+    use)
+      shift
+      __phpvm_use_php "$@"
+      ;;
+    *)
+      $phpvm_path/scripts/main "$@"
+      ;;
+  esac
 }
