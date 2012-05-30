@@ -1,84 +1,22 @@
 #!/usr/bin/env bash
+set -o errexit
 
-# TODO come up with strategy to not source all of these to the shell
-# TODO figure out a way to not exit the shell on error, just the
-# TODO PEAR installs in a etc directory outside of source
-# current operation
+echo "$@"
+. $phpvm_path/scripts/util
 
-temp_dir="$phpvm_path/tmp"
-raw_dir="$temp_dir/raw"
-src_dir="$temp_dir/src"
-install_dir="$phpvm_path/phps"
+# TODO remove reload every time
+reload_env
 
-mkdir -p "$raw_dir"
-mkdir -p "$src_dir"
+case "$1" in
+  install)
+    shift
+    install_php "$@"
+    ;;
+  reload)
+    reload_env
+    ;;
+  *)
+    usage
+    ;;
+esac
 
-# TODO move to another file
-function usage() {
-  cat $phpvm_path/text/usage.txt
-  echo ''
-}
-
-function compile_php() {
-  # $1 is the short php-xx.xx.xx name
-  # $2 is the full path to the newly extracted php source
-  cur="$PWD"
-  cd "$2"
-  mkdir -p "$install_dir/$1"
-  ./configure --prefix="$install_dir/$1" --without-pear > /dev/null
-  make > /dev/null && make install > /dev/null
-  cd "$cur"
-}
-
-# TODO break out into download/extraction
-function extract_archive() {
-  # $1 is the full path to .bz2 file
-  # $2 is the full path to the results directory
-  tar xjf "$1" -C "$src_dir"
-  version_name="`basename "$1" .tar.bz2`"
-  result_dir="$src_dir/$version_name"
-  compile_php "$version_name" "$result_dir"
-}
-
-# TODO break out into download/extraction
-function download_version() {
-  filename="php-$1.tar.bz2"
-  url="http://us.php.net/get/$filename/from/this/mirror"
-  mkdir -p "$raw_dir"
-  wget -O "$raw_dir/$filename" "$url"
-  extract_archive "$raw_dir/$filename"
-}
-
-function install_php() {
-  if [ -z "$1" ]
-  then
-    echo "No version provided"
-    return 0
-  fi
-
-  download_version "$1"
-}
-
-function reload_env() {
-  echo "reloading $phpvm_path/phpvm"
-  . $phpvm_path/scripts/phpvm
-}
-
-# main
-function phpvm() {
-  # TODO remove reload every time
-  reload_env
-
-  case "$1" in
-    install)
-      shift
-      install_php "$@"
-      ;;
-    reload)
-      reload_env
-      ;;
-    *)
-      usage
-      ;;
-  esac
-}

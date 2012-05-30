@@ -7,4 +7,7 @@ then
   phpvm_path="$HOME/.phpvm"
 fi
 
-. $phpvm_path/scripts/main
+function phpvm() {
+  chmod +x $phpvm_path/scripts/main
+  $phpvm_path/scripts/main "$@"
+}
