@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-\export phpvm_path
+export phpvm_path
 
 if [[ -z "${phpvm_path:-}" ]]
 then

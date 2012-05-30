@@ -70,6 +70,12 @@ Environment variables
     # this should be customizable
     $PHPVM_HOME=$HOME/.phpvm
 
+PHP will complie with these params by default
+
+    --prefix="$PHPVM_HOME/phps/php-{version-num}" --without-pear
+
+The aim of this is to ditch PEAR for composer/packagist. Something to revert later or add option for if desired
+
 Instalation
 -----------
 
