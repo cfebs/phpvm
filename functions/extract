@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+function compile_php() {
+  # $1 is the short php-xx.xx.xx name
+  # $2 is the full path to the newly extracted php source
+  cur="$PWD"
+  cd "$2"
+  mkdir -p "$phpvm_install_dir/$1"
+  ./configure --prefix="$phpvm_install_dir/$1" --without-pear > /dev/null
+  make > /dev/null && make install > /dev/null
+  cd "$cur"
+}
+
+# TODO break out into download/extraction
+function extract_archive() {
+  # $1 is the full path to .bz2 file
+  # $2 is the full path to the results directory
+  tar xjf "$1" -C "$phpvm_src_dir"
+  version_name="`basename "$1" .tar.bz2`"
+  result_dir="$phpvm_src_dir/$version_name"
+  compile_php "$version_name" "$result_dir"
+}
+
+# TODO break out into download/extraction
+function download_version() {
+  filename="php-$1.tar.bz2"
+  url="http://us.php.net/get/$filename/from/this/mirror"
+  echo "raw"
+  echo "$phpvm_raw_dir"
+  mkdir -p "$phpvm_raw_dir"
+  wget -O "$phpvm_raw_dir/$filename" "$url"
+  extract_archive "$phpvm_raw_dir/$filename"
+}
+
+function install_php() {
+  if [ -z "$1" ]
+  then
+    echo "No version provided"
+    return 0
+  fi
+
+  download_version "$1"
+}

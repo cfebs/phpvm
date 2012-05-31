@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
+set -o errexit
 
-PHPVM_PATH=$HOME/.phpvm
-mkdir -p $PHPVM_PATH
-mkdir -p $PHPVM_PATH/scripts
+. "$phpvm_path/functions/extract"
 
-# copy phpvm script dir to correct directory
-cp ./phpvm $PHPVM_PATH/scripts
+install_php "$@"

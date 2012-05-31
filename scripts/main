@@ -1,19 +1,16 @@
 #!/usr/bin/env bash
+# the main script to pass args to larger commands
 set -o errexit
 
-. $phpvm_path/scripts/util
-
-
-# TODO remove reload every time
-reload_env
+. "$phpvm_path/functions/util"
 
 case "$1" in
   install)
     shift
-    install_php "$@"
+    "$phpvm_path/scripts/install" "$@"
     ;;
-  reload)
-    reload_env
+  cleanup)
+    cleanup
     ;;
   *)
     usage

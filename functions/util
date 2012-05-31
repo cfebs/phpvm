@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# misc util functions
+
+function usage() {
+  cat "$phpvm_path/text/usage.txt"
+  echo ''
+}
+
+available_versions()
+{
+  echo "Available versions"
+  echo ""
+  ls "$phpvm_install_dir" | grep "php-.*"
+  echo ""
+}
+
+cleanup()
+{
+  rm -rf "$phpvm_temp_dir/*"
+}

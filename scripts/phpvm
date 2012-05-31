@@ -1,35 +1,36 @@
 #!/usr/bin/env bash
-
+# the main sourced file, calls from here should manage
+# the shell env
 # TODO organize better
 
-export phpvm_path
+# initialize env vars, and include functions
+. "$phpvm_path/functions/init"
 
-if [[ -z "${phpvm_path:-}" ]]
-then
-  phpvm_path="$HOME/.phpvm"
-fi
+# main function sourced into command line
+function phpvm()
+{
 
-. "$phpvm_path/scripts/use_php"
-
-function reload_env() {
-  echo "reloading $phpvm_path/phpvm"
-  . $phpvm_path/scripts/phpvm
-}
-
-function phpvm() {
-  chmod +x $phpvm_path/scripts/main
-  reload_env
-
+  # auto reload only for development
   case "$1" in
     reload)
-      reload_env
-    ;;
+      shift
+      __phpvm_reload_env
+      ;;
+    *)
+      if [ -f "$phpvm_path/.dev" ]
+      then
+        __phpvm_reload_env
+      fi
+      ;;
+  esac
+
+  case "$1" in
     use)
       shift
       __phpvm_use_php "$@"
       ;;
     *)
-      $phpvm_path/scripts/main "$@"
+      "$phpvm_path/scripts/main" "$@"
       ;;
   esac
 }

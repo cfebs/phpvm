@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# initial setup and includes
+
+function __phpvm_reload_env() {
+  echo "reloading $phpvm_path/phpvm"
+  . $phpvm_path/scripts/phpvm
+}
