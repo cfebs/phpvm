@@ -91,3 +91,5 @@ Links this source to our target install dir.
 
     ln -s $PWD $HOME/.phpvm
     . ./scripts/phpvm
+
+Placing a ``.dev`` file in the ``~./phpvm`` directory will re-source itself before any command
