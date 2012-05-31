@@ -25,8 +25,6 @@ function extract_archive() {
 function download_version() {
   filename="php-$1.tar.bz2"
   url="http://us.php.net/get/$filename/from/this/mirror"
-  echo "raw"
-  echo "$phpvm_raw_dir"
   mkdir -p "$phpvm_raw_dir"
   wget -O "$phpvm_raw_dir/$filename" "$url"
   extract_archive "$phpvm_raw_dir/$filename"

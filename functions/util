@@ -16,5 +16,5 @@ available_versions()
 
 cleanup()
 {
-  rm -rf "$phpvm_temp_dir/*"
+  rm -rf "$phpvm_temp_dir/"
 }

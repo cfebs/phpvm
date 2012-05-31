@@ -7,7 +7,7 @@ set -o errexit
 case "$1" in
   install)
     shift
-    "$phpvm_path/scripts/install" "$@"
+    "$phpvm_path/scripts/install_php" "$@"
     ;;
   cleanup)
     cleanup

@@ -3,6 +3,13 @@
 # the shell env
 # TODO organize better
 
+export phpvm_path
+
+if [[ -z "${phpvm_path:-}" ]]
+then
+  phpvm_path="$HOME/.phpvm"
+fi
+
 # initialize env vars, and include functions
 . "$phpvm_path/functions/init"
 

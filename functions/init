@@ -1,13 +1,6 @@
 #!/usr/bin/env bash
 # initial setup of variables and includes
 
-export phpvm_path
-
-if [[ -z "${phpvm_path:-}" ]]
-then
-  phpvm_path="$HOME/.phpvm"
-fi
-
 export phpvm_temp_dir="$phpvm_path/tmp"
 export phpvm_raw_dir="$phpvm_temp_dir/raw"
 export phpvm_src_dir="$phpvm_temp_dir/src"

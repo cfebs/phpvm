@@ -93,3 +93,12 @@ Links this source to our target install dir.
     . ./scripts/phpvm
 
 Placing a ``.dev`` file in the ``~./phpvm`` directory will re-source itself before any command
+
+More Writing
+============
+
+PHP 5.4 includes a builtin web server which is fantasitc for this project.
+
+That means that users can pull down a version of php and with very simple PATH modification, get up and running even faster.
+
+One big TODO is going to be refining PATH/bin management for the traditional php dev environment, which I am really not sure how to tackle yet.
