@@ -17,15 +17,16 @@ This is just an experiment, lets see how it goes!
 Goal
 ----
 
-My goal is to replicate the main features of these tools for php.
+My goal is to replicate the main features of these tools for php in rough order of importance
 
 1. Downloading and compiling specific versions
 2. Dropping them in sub dir in a user's home
 3. Managing the users's ``$PATH`` to swap out versions
+4. Tight integration with PHP 3.4's embedded server
+5. Tight integration with PHP 3.4's composer and packagist
+6. Clean upgrades to new versions of this tool
 4. Make it a viable alternative for real web servers, system level php
-5. Clean upgrades to new versions of this tool
-6. Tight integration with PHP 3.4's embedded server
-7. Tight integration with PHP 3.4's composer and packagist
+  - This is going to be tough!
 
 Hypothetical Usage
 ------------------
@@ -73,13 +74,13 @@ Environment variables
     # this should be customizable
     $phpvm_home=$HOME/.phpvm
 
-PHP will complie with these params by default
+PHP will compile with these params by default
 
     --prefix="$PHPVM_HOME/phps/php-{version-num}" --without-pear
 
 The aim of this is to ditch PEAR for composer/packagist. Provide optional arg for configure args
 
-Instalation
+Installation
 -----------
 
 Aiming for really simple curl based auto-install design I have seen.
@@ -91,7 +92,7 @@ Aiming for really simple curl based auto-install design I have seen.
 
 ### For Quick Dev
 
-Links this source to our target install dir.
+Link this source to our target install dir.
 
     ln -s $PWD $HOME/.phpvm
     . ./scripts/phpvm
@@ -101,7 +102,7 @@ Placing an empty ``.dev`` file in the ``~./phpvm`` directory will re-source itse
 More Writing
 ============
 
-PHP 5.4 includes a builtin web server which is fantasitc for this project.
+PHP 5.4 includes a builtin web server which is fantastic for this project.
 
 That means that users can pull down a version of php and with very simple PATH modification and get up and running even faster.
 
