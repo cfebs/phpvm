@@ -40,6 +40,14 @@ function phpvm()
       shift
       __phpvm_use_php "$@"
       ;;
+    remove)
+      shift
+      __phpvm_remove "$@"
+      ;;
+    unload)
+      shift
+      __phpvm_unload "$@"
+      ;;
     list)
       shift
       __phpvm_list "$@"

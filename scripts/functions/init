@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
 # initial setup of variables and includes
 
-export phpvm_work_dir="$phpvm_path/work"
 export phpvm_temp_dir="$phpvm_path/tmp"
 export phpvm_raw_dir="$phpvm_temp_dir/raw"
 export phpvm_src_dir="$phpvm_temp_dir/src"
 export phpvm_install_dir="$phpvm_path/phps"
+
+if [ -z "$phpvm_using" ]
+then
+  export phpvm_using=""
+fi
 
 # dirs and perms
 mkdir -p "$phpvm_raw_dir"

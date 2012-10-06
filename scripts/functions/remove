@@ -1,14 +1,51 @@
 #!/usr/bin/env bash
 
-__phpvm_remove() {
-  # TODO should unload from path if active
-  if [ -d "$phpvm_install_dir" ]
+__phpvm_unload() {
+  # if using a certain version, then unload from path
+  if [ ! -z "$phpvm_using" ]
   then
-    echo -e "\nInstalled Versions"
-    echo -e "------------------"
-    ls "$phpvm_install_dir" | sed 's/php-//g'
-    echo ''
+    echo "Unloading $phpvm_using"
+    # @ is the delimiter
+    PATH=`echo $PATH | sed "s@:*$phpvm_path/phps/php-.*/bin@@g"`
+    export PATH
+    export phpvm_using=''
+  fi
+}
+
+__phpvm_remove() {
+  if [ -z "$1" ]
+  then
+    echo "No version specified"
+    return 0
+  fi
+
+  # first arg is the php version
+  phpvm_php_path="$phpvm_path/phps/php-$1"
+
+  if [ -d "$phpvm_php_path" ]
+  then
+
+    # unload from path
+    __phpvm_unload
+
+    read -p "Completely shred php-$1 (y/n)?" choice
+
+    case "$choice" in
+      y|Y )
+        rm -rf "$phpvm_bin_path"
+        ;;
+      n|N )
+        echo "no"
+        ;;
+      * ) echo
+        "Invalid choice, not proceding"
+        ;;
+    esac
+
+    echo "Using $1"
+
   else
-    echo "No phps installed"
+    echo "Version is not installed"
+    __phpvm_list
   fi
 }

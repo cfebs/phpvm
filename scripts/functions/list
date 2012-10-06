@@ -5,8 +5,11 @@ __phpvm_list() {
   then
     echo -e "\nInstalled Versions"
     echo -e "------------------"
-    ls "$phpvm_install_dir" | sed 's/php-//g'
+
+    ls "$phpvm_install_dir" | sed 's/php-/ /g' | sed "s/$phpvm_using/\* $phpvm_using/g"
+
     echo ''
+    echo '(* == active php version)'
   else
     echo "No phps installed"
   fi

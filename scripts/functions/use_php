@@ -13,12 +13,15 @@ __phpvm_use_php() {
 
   if [ -d "$phpvm_bin_path" ]
   then
+
     # @ is the delimiter
     PATH=`echo $PATH | sed "s@:*$phpvm_path/phps/php-.*/bin@@g"`
 
     # remove existing bin path
     PATH="$PATH:${phpvm_bin_path}"
     export PATH
+
+    export phpvm_using="$1"
     echo "Using $1"
 
   else
