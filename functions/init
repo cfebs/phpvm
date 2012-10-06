@@ -12,5 +12,6 @@ mkdir -p "$phpvm_src_dir"
 chmod +x $phpvm_path/scripts/*
 
 . "$phpvm_path/functions/use_php"
+. "$phpvm_path/functions/list"
 . "$phpvm_path/functions/reload"
 

@@ -36,6 +36,10 @@ function phpvm()
       shift
       __phpvm_use_php "$@"
       ;;
+    list)
+      shift
+      __phpvm_list "$@"
+      ;;
     *)
       "$phpvm_path/scripts/main" "$@"
       ;;

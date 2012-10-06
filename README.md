@@ -20,9 +20,12 @@ Goal
 My goal is to replicate the main features of these tools for php.
 
 1. Downloading and compiling specific versions
-2. Dropping them in a user's home directory
-3. Managing the users's $PATH
-4. Clean upgrades to new versions of this tool
+2. Dropping them in sub dir in a user's home
+3. Managing the users's ``$PATH`` to swap out versions
+4. Make it a viable alternative for real web servers, system level php
+5. Clean upgrades to new versions of this tool
+6. Tight integration with PHP 3.4's embedded server
+7. Tight integration with PHP 3.4's composer and packagist
 
 Hypothetical Usage
 ------------------
@@ -55,35 +58,36 @@ This will change as I start to study rvm more closely
         script/
             # home of this script (only 1 version for now)
         phps/
-            5.3.13/
+            php-5.3.13/
                 # compiled and ready to use
         tmp/
             source/
-                5.3.13/
+                php-5.3.13/
                     # extracted source
             raw/
-                5.3.13/
+                php-5.3.13.tar.bz2
                     # raw download
 
 Environment variables
 
     # this should be customizable
-    $PHPVM_HOME=$HOME/.phpvm
+    $phpvm_home=$HOME/.phpvm
 
 PHP will complie with these params by default
 
     --prefix="$PHPVM_HOME/phps/php-{version-num}" --without-pear
 
-The aim of this is to ditch PEAR for composer/packagist. Something to revert later or add option for if desired
+The aim of this is to ditch PEAR for composer/packagist. Provide optional arg for configure args
 
 Instalation
 -----------
 
 Aiming for really simple curl based auto-install design I have seen.
 
+    curl -L url.com | bash -s
+
     mkdir $HOME/.phpvm
-    mkdir $HOME/.phpvm/script
-    # drop installation into the script dir
+    # drop installation into the script dir, call it a day
 
 ### For Quick Dev
 
@@ -92,13 +96,13 @@ Links this source to our target install dir.
     ln -s $PWD $HOME/.phpvm
     . ./scripts/phpvm
 
-Placing a ``.dev`` file in the ``~./phpvm`` directory will re-source itself before any command
+Placing an empty ``.dev`` file in the ``~./phpvm`` directory will re-source itself before any command
 
 More Writing
 ============
 
 PHP 5.4 includes a builtin web server which is fantasitc for this project.
 
-That means that users can pull down a version of php and with very simple PATH modification, get up and running even faster.
+That means that users can pull down a version of php and with very simple PATH modification and get up and running even faster.
 
 One big TODO is going to be refining PATH/bin management for the traditional php dev environment, which I am really not sure how to tackle yet.

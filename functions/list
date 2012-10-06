@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+__phpvm_list() {
+  if [ -d "$phpvm_install_dir" ]
+  then
+    echo -e "\nInstalled Versions"
+    echo -e "------------------"
+    ls "$phpvm_install_dir" | sed 's/php-//g'
+    echo ''
+  else
+    echo "No phps installed"
+  fi
+}
