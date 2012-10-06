@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+__phpvm_remove() {
+  # TODO should unload from path if active
+  if [ -d "$phpvm_install_dir" ]
+  then
+    echo -e "\nInstalled Versions"
+    echo -e "------------------"
+    ls "$phpvm_install_dir" | sed 's/php-//g'
+    echo ''
+  else
+    echo "No phps installed"
+  fi
+}

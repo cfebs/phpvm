@@ -16,6 +16,10 @@ phpvm - A php version management system
     Sets a php bin directory in the path to use for the current session
     Use should only activate one bin directoy at a time
 
+  phpvm list
+
+    See a list of php versions installed
+
   phpvm cleanup
 
     Forcefully deletes the ~/.phpvm/tmp directory which consists of downloaded

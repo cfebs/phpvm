@@ -11,7 +11,7 @@ then
 fi
 
 # initialize env vars, and include functions
-. "$phpvm_path/functions/init"
+. "$phpvm_path/scripts/functions/init"
 
 # main function sourced into command line
 function phpvm()
@@ -31,7 +31,11 @@ function phpvm()
       ;;
   esac
 
+  # functions
   case "$1" in
+    cleanup)
+      __phpvm_cleanup
+      ;;
     use)
       shift
       __phpvm_use_php "$@"

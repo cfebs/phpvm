@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # initial setup of variables and includes
 
+export phpvm_work_dir="$phpvm_path/work"
 export phpvm_temp_dir="$phpvm_path/tmp"
 export phpvm_raw_dir="$phpvm_temp_dir/raw"
 export phpvm_src_dir="$phpvm_temp_dir/src"
@@ -11,7 +12,8 @@ mkdir -p "$phpvm_raw_dir"
 mkdir -p "$phpvm_src_dir"
 chmod +x $phpvm_path/scripts/*
 
-. "$phpvm_path/functions/use_php"
-. "$phpvm_path/functions/list"
-. "$phpvm_path/functions/reload"
+. "$phpvm_path/scripts/functions/use_php"
+. "$phpvm_path/scripts/functions/list"
+. "$phpvm_path/scripts/functions/remove"
+. "$phpvm_path/scripts/functions/reload"
 

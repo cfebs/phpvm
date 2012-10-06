@@ -2,18 +2,16 @@
 # the main script to pass args to larger commands
 set -o errexit
 
-. "$phpvm_path/functions/util"
+. "$phpvm_path/scripts/functions/util"
 
 case "$1" in
   install)
     shift
     "$phpvm_path/scripts/install_php" "$@"
     ;;
-  cleanup)
-    cleanup
-    ;;
   *)
-    usage
+    # catchall for usage
+    __phpvm_usage
     ;;
 esac
 

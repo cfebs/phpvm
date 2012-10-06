@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # misc util functions
 
-function usage() {
-  cat "$phpvm_path/text/usage.txt"
+__phpvm_usage() {
+  cat "$phpvm_path/scripts/text/usage.txt"
   echo ''
 }
 
-available_versions()
+__phpvm_available_versions()
 {
   echo "Available versions"
   echo ""
@@ -14,7 +14,7 @@ available_versions()
   echo ""
 }
 
-cleanup()
+__phpvm_cleanup()
 {
   rm -rf "$phpvm_temp_dir/"
 }

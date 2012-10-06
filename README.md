@@ -8,7 +8,7 @@ getting up and running fast with php in a self contained environment is not as e
 After learning the workflow of installing a ruby version once through rvm I was hooked.
 
 These tools are fun to use, and they're just plain missing from PHP.
-xampp is a close relative, but it's not quite the same.
+xampp is a relative of sorts, but it's not quite the same.
 
 ### Disclaimer
 
