@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -o errexit
 
-. "$phpvm_path/functions/extract"
+. "$phpvm_path/scripts/functions/extract"
 
 install_php "$@"
