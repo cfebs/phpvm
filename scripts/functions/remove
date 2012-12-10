@@ -59,3 +59,10 @@ __phpvm_remove() {
     __phpvm_list
   fi
 }
+
+__phpvm_cleanup() {
+
+  #  Clean up temp files
+
+  rm -rf "$phpvm_temp_dir/"
+}

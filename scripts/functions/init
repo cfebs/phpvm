@@ -16,6 +16,7 @@ mkdir -p "$phpvm_raw_dir"
 mkdir -p "$phpvm_src_dir"
 chmod +x $phpvm_path/scripts/*
 
+. "$phpvm_path/scripts/functions/util"
 . "$phpvm_path/scripts/functions/use_php"
 . "$phpvm_path/scripts/functions/list"
 . "$phpvm_path/scripts/functions/remove"

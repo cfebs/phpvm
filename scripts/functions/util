@@ -6,15 +6,11 @@ __phpvm_usage() {
   echo ''
 }
 
-__phpvm_available_versions()
-{
-  echo "Available versions"
-  echo ""
-  ls "$phpvm_install_dir" | grep "php-.*"
-  echo ""
-}
+__phpvm_cleanup() {
 
-__phpvm_cleanup()
-{
+  #  Clean up temp files
+
   rm -rf "$phpvm_temp_dir/"
+
+  echo "Cleanup of $phpvm_temp_dir/ complete"
 }
