@@ -1,19 +1,28 @@
 #!/usr/bin/env bash
+# a php version manager
+#
+# @todo quiet mode with log files
+# @todo handling configure options
+# @todo check deps before starting
 
 phpvm_path="$HOME/.phpvm"
 old_rels_cache_path="$phpvm_path/tmp/old_releases.html"
 rels_cache_path="$phpvm_path/tmp/releases.html"
 downloads_path="$phpvm_path/tmp"
 
-help() {
+usage() {
     echo "phpvm cmd"
-    echo "Commands"
+    echo "Commands:"
     echo -e "\thelp\t\tshow this"
     echo -e "\thelp cmd\tshow cmd specific help"
     echo -e "\tls\t\tlist installed php versions"
     echo -e "\tls-remote\tlist remote php versions"
     echo -e "\tinstall version\tinstalls a remote php version"
     echo -e "\tbin\t\tget bin path for an install"
+    echo "Examples:"
+    echo -e "\tphpvm install 7.0.4"
+    echo -e "\t\$(phpvm bin 7.0.4)/php --version"
+    echo -e "\t\$(phpvm bin 7.0.4)/composer --version"
 }
 
 deps() {
@@ -38,6 +47,18 @@ ls_remote__versions() {
     echo "$old_versions"
     echo "$new_versions"
     return 0;
+}
+
+ls_local() {
+    # installed means bin was linked
+    echo "Locally installed"
+    for dir in $phpvm_path/installs/*
+    do
+        if [ -f "$dir/bin/php" ]
+        then
+            echo "$(basename "$dir")"
+        fi
+    done
 }
 
 ls_remote() {
@@ -66,6 +87,37 @@ ls_remote() {
     echo "$new_versions"
 }
 
+install_composer() {
+    local php_bin="$1"
+    local install_path="$2"
+    local installed_path="$install_path/composer.phar"
+
+    if [ ! -f "$php_bin" ]
+    then
+        echo "$php_bin php bin not found"
+        return 1
+    fi
+
+    if [ ! -d "$install_path" ]
+    then
+        echo "$install_path install path not found"
+        return 1
+    fi
+
+    if [ ! -f "$installed_path" ]
+    then
+        wget -O "$installed_path" 'https://getcomposer.org/download/1.0.0-beta1/composer.phar'
+    fi
+
+    echo "#!/usr/bin/env bash
+$php_bin $install_path/composer.phar
+" > "$install_path/composer"
+
+    chmod +x "$install_path/composer"
+
+    return 0
+}
+
 test_full_version() {
     local version="$1"
     if echo "$version" | grep -q -e '[0-9]\+\.[0-9]\+\.[0-9]\+'
@@ -89,6 +141,8 @@ get_tar_url() {
 
 install() {
     local version="$2"
+    # @todo
+    local configure_string="$3"
 
     # init cache files
     ls_remote > /dev/null
@@ -139,10 +193,6 @@ install() {
 
     local extracted_dir="$install_src_dir/php-$version"
 
-    # install dirs
-    # /installs/$version/src
-    # /installs/$version/
-
     # @todo don't necessarily know extracted dir pattern
     if [ -d "$extracted_dir" ]
     then
@@ -153,19 +203,30 @@ install() {
 
     cd "$extracted_dir"
 
-    # @todo configure options
-    ./configure
+    ./configure "$configure_string"
     make
 
+    # link bins
+    local install_bin_path="$install_dir/bin"
+    mkdir -p "$install_bin_path"
+
+    ln -s $extracted_dir/sapi/cli/php $install_bin_path/php
+    install_composer "$install_bin_path/php" "$install_bin_path"
+
+    echo "php --version"
+    "$install_bin_path/php" --version
+    echo "composer --version"
+    "$install_bin_path/composer" --version
+
+    echo "Installation complete"
     return 0;
 }
 
 bin_path() {
-    local version="$1"
+    local version="$2"
     local version_dir="$(get_version_dir "$version")"
-    local bin_dir="$version_dir/src/php-$version/sbin"
+    local bin_dir="$version_dir/bin"
 
-    echo "$bin_dir"
     if [ ! -d "$bin_dir" ]
     then
         echo "No bin dir found"
@@ -173,16 +234,21 @@ bin_path() {
     fi
 
     echo "$bin_dir"
+    return 0
 }
 
 dir_setup
 case "$1" in
     help)
-        help
+        usage
         exit 0
         ;;
     bin)
         bin_path "$@"
+        exit 0
+        ;;
+    ls)
+        ls_local "$@"
         exit 0
         ;;
     ls-remote)
@@ -194,7 +260,7 @@ case "$1" in
         exit 0;
         ;;
     *)
-        help
+        usage
         exit 0
         ;;
 esac
