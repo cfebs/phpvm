@@ -1,120 +1,68 @@
-phpvm
-=====
+# phpvm
 
-A php version manager for linux that strives to mirror the functionality of [rvm](https://rvm.io/)
+A php version manager for linux that stays out of your way.
 
-### Disclaimer
+## Quick start
 
-This is just an experiment, lets see how it goes!
+Clone repo somewhere
 
+```
+phpvm ls-remote
+phpvm install 7.0.4
+```
 
-Install
--------
+## Commands
 
-Clone the repo somewhere, in this example `~/phpvm_src`
+```
+phpvm ls-remote
+```
 
-    mkdir ~/phpvm_src && cd ~/phpvm_src
-    git clone repo
-    ln -s $PWD $HOME/.phpvm
+> Fetches http://php.net/downloads.php and http://php.net/releases/ and parses them for version numbers. Not 100% accurate, but not bad
 
-    # add to ~/.bashrc
-    [[ -s "$HOME/.phpvm/scripts/phpvm" ]] && . "$HOME/.phpvm/scripts/phpvm"
+```
+phpvm install 7.0.4
+```
 
-*TODO*
-  - auto installer
+> Creates directories `~/.phpvm/installs/7.0.4/bin` and ~/.phpvm/installs/7.0.4/src`. Downloads php, configures it, builds it, downloads composer. Then links php sapi cli bin to the `bin` directory and creates a composer bin file that just calls the downloaded `composer.phar` file with this version of php
 
-Usage
------
+```
+phpvm ls
+```
 
-Install a php version
+> Looks locally for installed cli bins
 
-    phpvm install 5.3.13
+```
+phpvm bin
+```
 
-Uninstall a php version
+> Outputs phpvm bin path, in this directory should be `php` and `composer` exes, so you can do: `$(phpvm bin 7.0.4)/php -r 'echo "hi";'` and `$(phpvm bin 7.0.4)/composer install`
 
-    phpvm remove 5.3.13
+## Reference
 
-Apply a php version to current path
+### Build dependencies
 
-    phpvm use 5.3
+A list of some php deps required for building
 
+#### Ubuntu
 
-TODO Usage
-----------
+```
+sudo apt-get install build-essential libxml2-dev
+```
 
-Upgrade the tool
+### Scope of features
 
-    phpvm up
+This tool is meant to do a few things: download php, configure php, build php and make finding paths to php installs easy.
 
-Major installs
+This is contrary to the more robust (and fantastic) tools like [rvm](https://github.com/rvm/rvm), [rbenv](https://github.com/rbenv/rbenv) and [nvm](https://github.com/creationix/nvm) - `phpvm` does less!
 
-    phpvm install 5.3  # latest major version
+If phpvm doesn't do something you want, consider setting up functions or aliases in your own configuration.
 
-Save a default version to load
+```sh
+# in ~/.bashrc
+PHPVM_BIN="$HOME/src/phpvm/phpvm"
+MY_PHP_VERSION='7.0.4'
+alias pphp="$("$PHPVM_BIN" bin "$MY_PHP_VERSION")/php"
+alias ccomposer="$("$PHPVM_BIN" bin "$MY_PHP_VERSION")/composer"
+```
 
-    phpvm use --default 5.3  # sets a version as the default
-
-Architecture
-------------
-
-This will change as I start to study rvm more closely
-
-    $HOME/.phpvm
-        script/
-            # home of this script, functions, etc
-        phps/
-            php-5.3.13/
-                # compiled and ready to use
-        tmp/
-            source/
-                php-5.3.13/
-                    # extracted source
-            raw/
-                php-5.3.13.tar.bz2
-                    # raw download
-
-Environment variables
-
-    # this should be customizable
-    $phpvm_home=$HOME/.phpvm
-
-PHP will compile with these params by default
-
-    --prefix="$PHPVM_HOME/phps/php-{version-num}" --without-pear
-
-### For Quick Dev
-
-Placing an empty ``.dev`` file in the ``~./phpvm`` directory will re-source itself before any command
-
-Motivation
-==========
-
-One of the ways working with ruby is so pleasant is simple management scripts
-and packages like gems, rvm and rbenv. composer is gaining some traction, but
-getting up and running fast with php in a self contained environment is not as easy.
-
-After learning the workflow of installing a ruby version once through rvm I was hooked.
-
-These tools are fun to use, and they're just plain missing from PHP.
-xampp is a relative of sorts, but it's not quite the same.
-
-PHP 5.4 includes a builtin web server which is fantastic for this project.
-
-That means that users can pull down a version of php and with very simple PATH modification and get up and running even faster.
-
-One big TODO is going to be refining PATH/bin management for the traditional php dev environment, which I am really not sure how to tackle yet.
-
-Goal
-----
-
-My goal is to replicate the main features of these tools for php in rough order of importance
-
-1. Downloading and compiling specific versions
-1. Dropping them in sub dir in a user's home
-1. Managing the users's ``$PATH`` to swap out versions
-1. Tight integration with PHP 3.4's embedded server
-1. Tight integration with PHP 3.4's composer and packagist
-1. Clean upgrades to new versions of this tool
-1. Auto complete commands
-1. Make it a viable alternative for real web servers, system level php
-  - This is going to be tough!
+This way you could use `pphp` and `ccomposer` in your shell and be using the versions managed by phpvm.
