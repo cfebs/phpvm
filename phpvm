@@ -19,6 +19,7 @@ usage() {
     echo -e "\tls-remote\tlist remote php versions"
     echo -e "\tinstall version\tinstalls a remote php version"
     echo -e "\tbin\t\tget bin path for an install"
+    echo -e "\tremove version\tremoves a php version"
     echo ""
     echo "Examples:"
     echo -e "\tphpvm install 7.0.4"
@@ -238,6 +239,18 @@ bin_path() {
     return 0
 }
 
+remove() {
+    let version="$2"
+    let version_dir="$(get_version_dir "$version")"
+
+    if [ -d "$version_dir" ]
+    then
+        rm -rf "$version_dir"
+    fi
+
+    echo "Removed $version at $version_dir"
+}
+
 dir_setup
 case "$1" in
     help)
@@ -254,6 +267,10 @@ case "$1" in
         ;;
     ls-remote)
         ls_remote
+        exit 0;
+        ;;
+    remove)
+        remove "$@"
         exit 0;
         ;;
     install)
