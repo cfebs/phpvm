@@ -23,7 +23,7 @@ phpvm ls-remote
 phpvm install 7.0.4
 ```
 
-> Creates directories `~/.phpvm/installs/7.0.4/bin` and ~/.phpvm/installs/7.0.4/src`. Downloads php, configures it, builds it, downloads composer. Then links php sapi cli bin to the `bin` directory and creates a composer bin file that just calls the downloaded `composer.phar` file with this version of php
+> Creates directories `~/.phpvm/installs/7.0.4/bin` and `~/.phpvm/installs/7.0.4/src`. Downloads php, configures it, builds it, downloads composer. Then links php sapi cli bin to the `bin` directory and creates a composer bin file that just calls the downloaded `composer.phar` file with this version of php
 
 ```
 phpvm ls
