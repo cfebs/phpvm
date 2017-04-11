@@ -1,35 +1,41 @@
 #!/usr/bin/bash
 
+scriptname=`basename $0`
+
+usage() {
+  echo "Usage: `basename $scriptname` file [version]*."
+  echo "Version will be ${versions[0]} by default."
+  exit 0
+}
+
+error() {
+  echo "Version '$1' is not installed. Either install it or use one amongst these:"
+  phpvm ls | tail -n +2
+  exit 1
+}
+
 phpvm &> /dev/null
 if [ $? != 0 ]; then
   echo "Please install phpvm first."
   exit 1
 fi
 
-version=$(phpvm ls | tail -n 1)
-
-usage() {
-  echo "Usage: `basename $0` file [version]."
-  echo "Version will be $version by default."
-  exit 0
-}
+versions=( $(phpvm ls | tail -n 1) )
 
 [ -z $1 ] || [ $1 == "-h" ] && usage
+[ ! -f "$1" ] && echo "$1: No such file." && exit 1
 
-if [ ! -z $2 ]; then
-  version="$2"
-fi
+file=$1
 
-if [ ! -f "$1" ]; then
-  echo "$1: No such file."
-  exit 1
-fi
+[ ! -z "$2" ] && versions=()
+for ((i = 2; i <= $#; i++)); do
+  versions+=(${!i})
 
-phpvm bin $version &> /dev/null
-if [ $? != 0 ]; then
-  echo "Version '$version' is not installed. Either install it or use one amongst these:"
-  phpvm ls | tail -n +2
-  exit 1
-fi
+  phpvm bin ${!i} &> /dev/null
+  [ $? != 0 ] && error "${!i}"
+done
 
-$(phpvm bin "$version")/php "$1"
+for version in "${versions[@]}"; do
+  echo "$scriptname: starting `basename $file` with PHP v$version" >&2
+  $(phpvm bin "$version")/php "$file"
+done
