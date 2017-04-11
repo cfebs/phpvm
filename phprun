@@ -3,7 +3,7 @@
 phpvm &> /dev/null
 if [ $? != 0 ]; then
   echo "Please install phpvm first."
-  usage
+  exit 1
 fi
 
 version=$(phpvm ls | tail -n 1)
