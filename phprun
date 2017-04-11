@@ -1,0 +1,35 @@
+#!/usr/bin/bash
+
+phpvm &> /dev/null
+if [ $? != 0 ]; then
+  echo "Please install phpvm first."
+  usage
+fi
+
+version=$(phpvm ls | tail -n 1)
+
+usage() {
+  echo "Usage: `basename $0` file [version]."
+  echo "Version will be $version by default."
+  exit 0
+}
+
+[ -z $1 ] || [ $1 == "-h" ] && usage
+
+if [ ! -z $2 ]; then
+  version="$2"
+fi
+
+if [ ! -f "$1" ]; then
+  echo "$1: No such file."
+  exit 1
+fi
+
+phpvm bin $version &> /dev/null
+if [ $? != 0 ]; then
+  echo "Version '$version' is not installed. Either install it or use one amongst these:"
+  phpvm ls | tail -n +2
+  exit 1
+fi
+
+$(phpvm bin "$version")/php "$1"
